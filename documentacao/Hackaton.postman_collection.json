@@ -14,35 +14,35 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{token}}",
+							"value": "{{token1}}",
 							"type": "string"
 						}
 					]
 				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization-IdToken",
+						"value": "{{idToken1}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
 							"key": "files",
 							"type": "file",
-							"src": "{{video_path}}"
+							"src": "/Users/frbastos/Documents/temp/fiapvideo_pt2.MOV"
 						}
 					]
 				},
 				"url": {
 					"raw": "{{baseurl}}/videos/upload",
-					"protocol": "https",
 					"host": [
-						"wl14qaggrj",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
+						"{{baseurl}}"
 					],
 					"path": [
-						"prod",
 						"videos",
 						"upload"
 					]
@@ -58,25 +58,25 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{token}}",
+							"value": "{{token1}}",
 							"type": "string"
 						}
 					]
 				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization-IdToken",
+						"value": "{{idToken1}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{baseurl}}/videos",
-					"protocol": "https",
 					"host": [
-						"wl14qaggrj",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
+						"{{baseurl}}"
 					],
 					"path": [
-						"prod",
 						"videos"
 					]
 				}
@@ -91,15 +91,21 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{token}}",
+							"value": "{{token1}}",
 							"type": "string"
 						}
 					]
 				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization-IdToken",
+						"value": "{{idToken1}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{baseurl}}/videos/{{videoId}}/download",
+					"raw": "https://wl14qaggrj.execute-api.us-east-1.amazonaws.com/prod/videos/1ea14830-8b9e-4937-881d-b3ca780312f5/download",
 					"protocol": "https",
 					"host": [
 						"wl14qaggrj",
@@ -111,7 +117,7 @@
 					"path": [
 						"prod",
 						"videos",
-						"{{videoId}}",
+						"1ea14830-8b9e-4937-881d-b3ca780312f5",
 						"download"
 					]
 				}
