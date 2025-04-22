@@ -8,6 +8,7 @@ export let options = {
 };
 
 const token = __ENV.TOKEN;
+const idToken = __ENV.TOKEN_ID;
 
 // Carrega o arquivo no escopo global (obrigatório)
 const file = http.file(open("./fiapvideo.MOV", "b"), "fiapvideo.MOV", "video/quicktime");
@@ -22,6 +23,7 @@ export default function () {
   const params = {
     headers: {
       Authorization: `Bearer ${token}`,
+      'Authorization-IdToken': `${idToken}`
     },
   };
 
