@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: armazenamento-deployment
+  labels:
+    app: armazenamento-deployment
+spec:
+  selector:
+    matchLabels:
+      app: armazenamento-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: armazenamento-deployment
+    spec:
+      containers:
+        - name: armazenamento-container
+          image: ar989827/armazenamento-video:latest
+          ports:
+            - containerPort: 8082
+          #Liveness Probe
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+            initialDelaySeconds: 110
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 250m
+              memory: 250Mi
+            limits:
+              cpu: 400m
+              memory: 512Mi
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: armazenamento-config
+                  key: SPRING_PROFILES_ACTIVE
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: armazenamento-config
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: armazenamento-config
+                  key: RABBITMQ_PORT
+            - name: RABBIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: RABBIT_USERNAME
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: RABBIT_PASSWORD
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: AWS_ACCESS_KEY
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: AWS_SECRET_KEY

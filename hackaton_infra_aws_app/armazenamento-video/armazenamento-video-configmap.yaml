@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: armazenamento-config
-data:
-  SPRING_PROFILES_ACTIVE: prod
-  RABBITMQ_HOST: rabbitmq-srv
-  RABBITMQ_PORT: '5672'
