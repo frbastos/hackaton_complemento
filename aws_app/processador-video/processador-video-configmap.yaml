@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: processador-config
+data:
+  SPRING_PROFILES_ACTIVE: prod
+  RABBITMQ_HOST: rabbitmq-srv
+  RABBITMQ_PORT: '5672'
+  SPRING_DATASOURCE_URL: jdbc:postgresql://processadordb.cx40omioc0sn.us-east-1.rds.amazonaws.com:5432/videodb
+  SPRING_JPA_HIBERNATE_DDL-AUTO: update
+  SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.PostgreSQLDialect
