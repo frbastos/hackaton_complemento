@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: processador-deployment
+  labels:
+    app: processador-deployment
+spec:
+  selector:
+    matchLabels:
+      app: processador-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: processador-deployment
+    spec:
+      containers:
+        - name: processador-container
+          image: ar989827/processador-video:latest
+          ports:
+            - containerPort: 8081
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 110
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            limits:
+              cpu: 750m
+              memory: 750Mi
+            requests:
+              cpu: 250m
+              memory: 300Mi
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: processador-config
+                  key: SPRING_PROFILES_ACTIVE
+            - name: SPRING_JPA_HIBERNATE_DDL-AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: processador-config
+                  key: SPRING_JPA_HIBERNATE_DDL-AUTO
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: processador-config
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_JPA_DATABASE-PLATFORM
+              valueFrom:
+                configMapKeyRef:
+                  name: processador-config
+                  key: SPRING_JPA_DATABASE-PLATFORM
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: org.postgresql.Driver
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: SPRING_DATASOURCE_PASSWORD
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: processador-config
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: processador-config
+                  key: RABBITMQ_PORT
+            - name: RABBIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: RABBIT_USERNAME
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: RABBIT_PASSWORD
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: AWS_ACCESS_KEY
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: AWS_SECRET_KEY
+          volumeMounts:
+            - name: frames-volume
+              mountPath: /tmp/frames
+      volumes:
+        - name: frames-volume
+          persistentVolumeClaim:
+            claimName: frames-pvc
