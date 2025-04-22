@@ -26,7 +26,12 @@ Requisitos técnicos:
 - O projeto deve ter testes que garantam a sua qualidade;
 - CI/CD da aplicacao
 
+## Diagrama da Arquitetura
+
 ![Diagrama da Arquitetura 1](./documentacao/fluxo_microsservicos.png)
+
+## Autenticação Cognito
+
 ![Autenticação Cognito](./documentacao/caminho_feliz.png)
 
 ## Conteúdo
